@@ -13,19 +13,19 @@ actor MockRemoteImagePipeline: RemoteImagePipeline {
         case success(Data)
         case failure
     }
-    
+
     enum RemoteImagePipelineError: Error {
         case imageFetchFailed
     }
-    
+
     private let response: Response
     private var requestUrls: [URL] = []
-    
+
     init(response: Response) {
         self.response = response
     }
-    
-    func imageData(url: URL) async throws -> Data {
+
+    func imageData(url _: URL) async throws -> Data {
         switch response {
         case .success(let data):
             return data
@@ -33,7 +33,7 @@ actor MockRemoteImagePipeline: RemoteImagePipeline {
             throw RemoteImagePipelineError.imageFetchFailed
         }
     }
-    
+
     func requestedUrls() -> [URL] {
         requestUrls
     }

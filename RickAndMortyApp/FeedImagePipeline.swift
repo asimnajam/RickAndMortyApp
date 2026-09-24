@@ -17,14 +17,13 @@ actor DefaultRemoteImagePipeline {
         case invalidResponse
         case unsuccessfulResponse(
             statusCode: Int,
-            data: Data
-        )
+            data: Data)
     }
-    
+
     let session: URLSession
     let cache = NSCache<NSURL, NSData>()
     var inFLightTask = [URL: Task<Data, Error>]()
-    
+
     init(session: URLSession = .shared) {
         self.session = session
     }
@@ -36,9 +35,8 @@ actor DefaultRemoteImagePipeline {
         configuration.urlCache = URLCache(
             memoryCapacity: 24 * 1024 * 1024,
             diskCapacity: 160 * 1024 * 1024,
-            diskPath: "InterviewNewsFeedImages"
-        )
-        
+            diskPath: "InterviewNewsFeedImages")
+
         return URLSession(configuration: configuration)
     }
 }
@@ -48,19 +46,18 @@ extension DefaultRemoteImagePipeline: RemoteImagePipeline {
         if let cacheData = cache.object(forKey: url as NSURL) {
             return cacheData as Data
         }
-        
+
         if let inFLightTask = inFLightTask[url] {
             return try await inFLightTask.value
         }
-        
+
         let session = makeSession()
-        
+
         let task = Task<Data, Error> {
             let request = URLRequest(
                 url: url,
                 cachePolicy: .returnCacheDataElseLoad,
-                timeoutInterval: 30
-            )
+                timeoutInterval: 30)
 
             let (data, response) = try await session.data(for: request)
             try Task.checkCancellation()
@@ -72,9 +69,9 @@ extension DefaultRemoteImagePipeline: RemoteImagePipeline {
 
             return data
         }
-        
+
         inFLightTask[url] = task
-        
+
         do {
             let data = try await task.value
             cache.setObject(data as NSData, forKey: url as NSURL, cost: data.count)

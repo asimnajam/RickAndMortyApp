@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//https://www.youtube.com/watch?v=HO1jOqbnkBA&t=3s
+// https://www.youtube.com/watch?v=HO1jOqbnkBA&t=3s
 
 private enum RemoteImagePhase {
     case idle
@@ -31,8 +31,7 @@ struct RemoteImageView<Content, Placeholder>: View where Content: View, Placehol
         @ViewBuilder content: @escaping (Image) -> Content = { $0.resizable().scaledToFill() },
         @ViewBuilder placeholder: @escaping () -> Placeholder = {
             ProgressView().tint(.white)
-        }
-    ) {
+        }) {
         self.url = url
         self.imagePipeline = imagePipeline
         self.content = content
@@ -49,9 +48,7 @@ struct RemoteImageView<Content, Placeholder>: View where Content: View, Placehol
                             Color(red: 0.41, green: 0.48, blue: 0.58)
                         ],
                         startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                        endPoint: .bottomTrailing))
 
             currentPhaseView
         }
@@ -67,10 +64,10 @@ struct RemoteImageView<Content, Placeholder>: View where Content: View, Placehol
         switch phase {
         case .idle, .loading:
             placeholder()
-            
+
         case .success(let image):
             content(image)
-            
+
         case .failure:
             VStack(spacing: 6) {
                 Image(systemName: "photo.badge.exclamationmark")
@@ -88,18 +85,18 @@ struct RemoteImageView<Content, Placeholder>: View where Content: View, Placehol
             phase = .failure
             return
         }
-        
+
         phase = .loading
-        
+
         do {
             let data = try await imagePipeline.imageData(url: url)
             try Task.checkCancellation()
-            
+
             guard let image = UIImage(data: data) else {
                 phase = .failure
                 return
             }
-            
+
             phase = .success(Image(uiImage: image))
         } catch is CancellationError {
             return

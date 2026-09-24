@@ -5,13 +5,13 @@
 //  Created by Syed Asim Najam on 23/09/2026.
 //
 
-import Foundation
 import Apollo
+import Foundation
 import RickAndMortyAPI
 
 final class ApolloCharactersRepository {
     let client: ApolloClient
-    
+
     init(client: ApolloClient) {
         self.client = client
     }
@@ -22,11 +22,11 @@ extension ApolloCharactersRepository: CharactersRepository {
     func fetchCharacters(page: Int) async throws -> CharactersPage {
         do {
             let response = try await client.fetch(query: CharactersQuery(page: Int32(page)))
-            
+
             if let errors = response.errors, !errors.isEmpty {
                 throw RepositoryError.graphQL(errors.map { $0.localizedDescription })
             }
-            
+
             let characters = response.data?.characters?.results?.compactMap { result -> Character? in
                 guard let result,
                       let id = result.id,
@@ -38,30 +38,28 @@ extension ApolloCharactersRepository: CharactersRepository {
                     name: name,
                     status: result.status ?? "Unknown",
                     species: result.species ?? "Unknown",
-                    imageURL: URL(string: result.image ?? "")
-                )
+                    imageURL: URL(string: result.image ?? ""))
             }
 
             return CharactersPage(
                 characters: characters ?? [],
-                nextPage: response.data?.characters?.info?.next
-            )
+                nextPage: response.data?.characters?.info?.next)
         } catch {
             throw error
         }
     }
-    
+
     @concurrent
     func fetchCharacters(id: String) async throws -> CharacterDetails {
         let response = try await client.fetch(query: CharacterDetailsQuery(id: id))
-        
+
         if let errors = response.errors {
             throw RepositoryError.graphQL(errors.map { $0.localizedDescription })
         }
-        
+
         guard let character = response.data?.character else { throw RepositoryError.missingCharacter }
         guard let id = character.id else { throw RepositoryError.missingID }
-        
+
         return CharacterDetails(
             id: id,
             name: character.name ?? "",
@@ -79,10 +77,8 @@ extension ApolloCharactersRepository: CharactersRepository {
                 return EpisodeSummary(
                     id: id,
                     name: episode.name ?? "Unknown",
-                    code: episode.episode ?? "Unknown"
-                )
+                    code: episode.episode ?? "Unknown")
             })
-        
     }
 }
 
@@ -94,11 +90,11 @@ enum RepositoryError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .graphQL(let messages):
-            return messages.joined(separator: "\n")
+            messages.joined(separator: "\n")
         case .missingCharacter:
-            return "Missing Character"
+            "Missing Character"
         case .missingID:
-            return "Missing ID"
+            "Missing ID"
         }
     }
 }

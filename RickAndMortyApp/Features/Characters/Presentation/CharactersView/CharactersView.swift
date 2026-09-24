@@ -16,10 +16,9 @@ enum AppRoute: Hashable {
 struct CharactersView: View {
     @StateObject private var viewModel: CharactersViewModel
     @State private var path: [AppRoute] = []
-    
-    @AppStorage("characterLayout")
-    private var layout: CharacterLayout = .list
-    
+
+    @AppStorage("characterLayout") private var layout: CharacterLayout = .list
+
     private let columnsOne = [
         GridItem(.adaptive(minimum: 160), spacing: 12)
     ]
@@ -30,8 +29,7 @@ struct CharactersView: View {
     init(repository: CharactersRepository, remoteImagePipeline: RemoteImagePipeline) {
         _viewModel = StateObject(wrappedValue: CharactersViewModel(
             repository: repository,
-            remoteImagePipeline: remoteImagePipeline)
-        )
+            remoteImagePipeline: remoteImagePipeline))
     }
 
     var body: some View {
@@ -45,12 +43,10 @@ struct CharactersView: View {
                             Image(
                                 systemName: layout == .list
                                     ? "square.grid.2x2"
-                                    : "list.bullet"
-                            )
+                                    : "list.bullet")
                         }
                         .accessibilityLabel(
-                            layout == .list ? "Show grid" : "Show list"
-                        )
+                            layout == .list ? "Show grid" : "Show list")
                     }
                 }
                 .navigationTitle("Characters")
@@ -61,9 +57,8 @@ struct CharactersView: View {
                             viewModel: CharacterDetailViewModel(
                                 repository: viewModel.repository,
                                 remoteImagePipeline: viewModel.remoteImagePipeline,
-                                characterID: id
-                            )
-                        )
+                                characterID: id))
+
                     case .settings:
                         SettingsView()
                     }
@@ -73,7 +68,7 @@ struct CharactersView: View {
             await viewModel.load()
         }
     }
-    
+
     @ViewBuilder
     var content: some View {
         switch viewModel.state {
@@ -85,7 +80,7 @@ struct CharactersView: View {
             errorView(message: message)
         }
     }
-    
+
     @ViewBuilder
     func characterCollection(_ characters: [Character]) -> some View {
         switch layout {
@@ -95,25 +90,22 @@ struct CharactersView: View {
                     NavigationLink(value: AppRoute.characterDetail(id: character.id)) {
                         CharacterGridItemView(
                             character: character,
-                            remoteImagePipeline: viewModel.remoteImagePipeline
-                        )
+                            remoteImagePipeline: viewModel.remoteImagePipeline)
                     }
                     .buttonStyle(.plain)
                 }
             }
             .padding(.horizontal)
+
         case .list:
             LazyVStack {
                 ForEach(characters, id: \.id) { character in
                     NavigationLink(value: AppRoute.characterDetail(id: character.id)) {
                         CharacterRowView(
                             character: character,
-                            remoteImagePipeline: viewModel.remoteImagePipeline
-                        )
+                            remoteImagePipeline: viewModel.remoteImagePipeline)
                     }
                     .buttonStyle(.plain)
-                    
-                    
                 }
                 Color.clear
                     .frame(height: 1)
@@ -123,7 +115,7 @@ struct CharactersView: View {
             }
         }
     }
-    
+
     func listView(_ characters: [Character]) -> some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -139,8 +131,8 @@ struct CharactersView: View {
 //                        )
 //                    }
 //                    .buttonStyle(.plain)
-//                    
-//                    
+//
+//
 //                }
 //                Color.clear
 //                    .frame(height: 1)
@@ -150,7 +142,7 @@ struct CharactersView: View {
 //            }
         }
     }
-    
+
     private func paginationTrigger() -> some View {
         Color.clear
             .frame(height: 1)
@@ -158,36 +150,36 @@ struct CharactersView: View {
                 await viewModel.loadCharactersIfNeeded()
             }
     }
-    
+
     private var emptyView: some View {
         VStack(spacing: 12) {
             Image(systemName: "person.slash")
                 .font(.largeTitle)
                 .foregroundStyle(.secondary)
-            
+
             Text("No Characters")
                 .font(.headline)
-            
+
             Text("The API returned an empty result.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
     }
-    
+
     private func errorView(message: String) -> some View {
         VStack(spacing: 16) {
             Image(systemName: "wifi.exclamationmark")
                 .font(.largeTitle)
                 .foregroundStyle(.red)
-            
+
             Text("Unable to Load Characters")
                 .font(.headline)
-            
+
             Text(message)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-            
+
             Button("Try Again") {
                 Task {
                     await viewModel.load()
@@ -201,19 +193,19 @@ struct CharactersView: View {
 
 struct ProfileView: View {
     let username: String
-    
-    // Pass the binding if child views need to navigate programmatically
+
+    /// Pass the binding if child views need to navigate programmatically
     @Binding var path: [AppRoute]
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Text("Welcome, \(username)!")
                 .font(.title)
-            
+
             Button("View Privacy Policy") {
                 path.append(.settings)
             }
-            
+
             Button("Pop to Root", role: .destructive) {
                 // Emptying the array instantly returns the user to the home screen
                 path.removeAll()

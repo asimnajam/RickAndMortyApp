@@ -15,8 +15,7 @@ struct RickAndMortyAppApp: App {
         WindowGroup {
             CharactersView(
                 repository: container.charactersRepository,
-                remoteImagePipeline: container.remoteImagePipline
-            )
+                remoteImagePipeline: container.remoteImagePipline)
         }
     }
 }

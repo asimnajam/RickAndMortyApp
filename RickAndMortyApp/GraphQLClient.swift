@@ -15,7 +15,6 @@ final class GraphQLClient {
 
     private init() {
         apollo = ApolloClient(
-            url: URL(string: "https://rickandmortyapi.com/graphql")!
-        )
+            url: URL(string: "https://rickandmortyapi.com/graphql")!)
     }
 }

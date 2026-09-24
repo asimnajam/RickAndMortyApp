@@ -5,31 +5,31 @@
 //  Created by Syed Asim Najam on 23/09/2026.
 //
 
-import Foundation
 import Apollo
+import Foundation
 import RickAndMortyAPI
 
-//protocol CharacterDetailRepository {
+// protocol CharacterDetailRepository {
 //    func fetchCharacters(id: Int) async throws -> CharacterDetails
-//}
+// }
 
-//struct CharacterDetailRepositoryImpl {
+// struct CharacterDetailRepositoryImpl {
 //    let client: ApolloClient
-//    
+//
 //    init(client: ApolloClient) {
 //        self.client = client
 //    }
 //
 //    func fetchCharacters(id: Int) async throws -> CharacterDetails {
 //        let response = try await client.fetch(query: CharacterDetailsQuery(id: "\(id)"))
-//        
+//
 //        if let errors = response.errors {
 //            throw RepositoryError.graphQL(errors.map { $0.localizedDescription })
 //        }
-//        
+//
 //        guard let character = response.data?.character else { throw CharacterMappingError.missingCharacter }
 //        guard let id = character.id else { throw CharacterMappingError.missingID }
-//        
+//
 //        return CharacterDetails(
 //            id: id,
 //            name: character.name ?? "",
@@ -50,19 +50,19 @@ import RickAndMortyAPI
 //                    code: episode.episode ?? "Unknown"
 //                )
 //            })
-//        
-//    }
-//}
-
-//import Foundation
-//import RickAndMortyAPI
 //
-//enum CharacterMappingError: Error {
+//    }
+// }
+
+// import Foundation
+// import RickAndMortyAPI
+//
+// enum CharacterMappingError: Error {
 //    case missingCharacter
 //    case missingID
-//}
+// }
 //
-//extension RickAndMortyAPI.CharacterDetailsQuery.Data.Character {
+// extension RickAndMortyAPI.CharacterDetailsQuery.Data.Character {
 //    func toDomain() throws -> CharacterDetails {
 //        guard let id else {
 //            throw CharacterMappingError.missingID
@@ -90,4 +90,4 @@ import RickAndMortyAPI
 //            }
 //        )
 //    }
-//}
+// }

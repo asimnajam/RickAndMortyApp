@@ -10,26 +10,26 @@ import SwiftUI
 struct CharacterRowView: View {
     let character: Character
     let remoteImagePipeline: any RemoteImagePipeline
-    
+
     var body: some View {
         HStack(alignment: .top) {
             RemoteImageView(url: character.imageURL, imagePipeline: remoteImagePipeline)
                 .frame(width: 100)
-            
+
             Spacer()
             VStack(alignment: .leading) {
                 Text(character.name)
                     .font(.headline)
-                
+
                 Text(character.species)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                
+
                 HStack(spacing: 5) {
                     Circle()
                         .fill(character.statusColor)
                         .frame(width: 8, height: 8)
-                    
+
                     Text(character.status)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -48,30 +48,29 @@ struct CharacterRowView: View {
     }
 }
 
-
 struct CharacterItemView: View {
     let character: Character
     let remoteImagePipeline: any RemoteImagePipeline
-    
+
     var body: some View {
         HStack(alignment: .top) {
             RemoteImageView(url: character.imageURL, imagePipeline: remoteImagePipeline)
                 .frame(width: 100)
-            
+
             Spacer()
             VStack(alignment: .leading) {
                 Text(character.name)
                     .font(.headline)
-                
+
                 Text(character.species)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                
+
                 HStack(spacing: 5) {
                     Circle()
                         .fill(character.statusColor)
                         .frame(width: 8, height: 8)
-                    
+
                     Text(character.status)
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -88,7 +87,7 @@ struct CharacterItemView: View {
         }
         .shadow(color: .black.opacity(0.10), radius: 18, y: 10)
     }
-    
+
 }
 
 struct CharacterGridItemView: View {
@@ -120,17 +119,16 @@ struct CharacterGridItemView: View {
     }
 }
 
-
 extension Character {
     /// Returns the corresponding status indicator color.
     var statusColor: Color {
         switch status.lowercased() {
         case "alive":
-            return .green
+            .green
         case "dead":
-            return .red
+            .red
         default:
-            return .gray
+            .gray
         }
     }
 }

@@ -11,7 +11,6 @@ import Foundation
 enum ApolloClientFactory {
     static func makeClient() -> ApolloClient {
         ApolloClient(
-            url: URL(string: "https://rickandmortyapi.com/graphql")!
-        )
+            url: URL(string: "https://rickandmortyapi.com/graphql")!)
     }
 }

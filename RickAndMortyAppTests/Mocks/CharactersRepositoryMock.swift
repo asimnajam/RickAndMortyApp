@@ -13,7 +13,7 @@ actor MockCharactersRepository: CharactersRepository {
         case success(CharactersPage)
         case failure
     }
-    
+
     enum RepositoryStubError: LocalizedError, Sendable {
         case failed
 
@@ -21,16 +21,17 @@ actor MockCharactersRepository: CharactersRepository {
             "Stub failure"
         }
     }
+
     private let response: Response
     private var requestPages: [Int] = []
-    
+
     init(response: Response) {
         self.response = response
     }
-    
+
     func fetchCharacters(page: Int) async throws -> RickAndMortyApp.CharactersPage {
         requestPages.append(page)
-        
+
         switch response {
         case .success(let charactersPage):
             return charactersPage
@@ -38,10 +39,8 @@ actor MockCharactersRepository: CharactersRepository {
             throw RepositoryStubError.failed
         }
     }
-    
+
     func requestedPages() -> [Int] {
         requestPages
     }
 }
-
-

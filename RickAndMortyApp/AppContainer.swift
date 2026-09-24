@@ -8,11 +8,10 @@
 final class AppContainer {
     let charactersRepository: any CharactersRepository
     let remoteImagePipline: any RemoteImagePipeline
-    
+
     init() {
         charactersRepository = ApolloCharactersRepository(
-            client: ApolloClientFactory.makeClient()
-        )
+            client: ApolloClientFactory.makeClient())
         remoteImagePipline = DefaultRemoteImagePipeline()
     }
 }
