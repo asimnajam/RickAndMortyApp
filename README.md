@@ -23,7 +23,7 @@ The project demonstrates type-safe GraphQL networking, pagination, MVVM architec
 
 | List                                              | Grid                                              | Details                                                 |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------- |
-| ![Character list](Screenshots/character-list.png) | ![Character grid](Screenshots/character-grid.png) | ![Character details](Screenshots/character-details.png) |
+| ![Character list](screenshots/character-list.png) | ![Character grid](screenshots/character-grid.png) | ![Character details](screenshots/character-details.png) |
 
 ## Tech Stack
 
